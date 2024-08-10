@@ -1,0 +1,84 @@
+h3{
+	background: orangered;
+	color:black ;
+}
+
+
+
+.abc{
+	background color: darkred;
+	color:green;
+}
+
+#pqr{
+	background: orangered;
+	color: gray;
+
+}
+
+.border_css{
+	width: 500 px;
+	height: 100px;
+	background-color:red;
+
+
+border-width: 10px;
+border-style:solid;
+border-color:green;
+
+
+border:solid 10px green;
+border:solid 10px yellow;
+border: 10px double green;
+border: 10ox dotted green;
+border: 10px dashed green;
+
+
+border-width: 10px 100px 5px 200px; trbl
+border-width: 10px 100px 5px; t rl 
+border-width: 10px 100px; tb rl 
+border-width: 10px;
+border-style: solid;
+border-color: green yellow blue black;
+
+
+border-width: 10px solid red;
+border-left: 10 px solid red;
+border-width: 0px 10px 0px 10px;
+
+
+
+
+
+
+
+
+
+
+
+
+border-radius:50%;
+border-radius: 50px;
+
+border-top-right-radius: 100px;
+border-bottom-left-radius: 100px;
+
+
+
+}
+
+button{
+	width: 150px;
+	height: 50px;
+	border: 1px solid;
+	background-color: yellow;
+
+	border-radius: 40%;
+	border-radius:100px;
+
+}
+
+
+
+
+
