@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bad Posture Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Load TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <!-- Load PoseNet -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Bad Posture Detection</h1>
+            <nav>
+                <ul>
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="/settings">Settings</a></li>
+                    <li><a href="/stats">Statistics</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="camera-section">
+            <h2>Posture Monitor</h2>
+            <div class="camera-container">
+                <video id="video" playsinline></video>
+                <canvas id="output"></canvas>
+                <div id="loading">Loading posture detection model...</div>
+            </div>
+            <div class="controls">
+                <button id="calibrate" class="btn primary">Calibrate Posture</button>
+                <button id="start" class="btn success">Start Monitoring</button>
+                <button id="stop" class="btn danger" disabled>Stop Monitoring</button>
+            </div>
+        </section>
+
+        <section class="status-section">
+            <h2>Current Status</h2>
+            <div class="status-container">
+                <div id="status-indicator" class="status-good">
+                    <span id="status-text">Waiting to start...</span>
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <h3>Posture Score</h3>
+                        <div class="score" id="posture-score">--</div>
+                    </div>
+                    <div class="metric">
+                        <h3>Time in Good Posture</h3>
+                        <div id="good-posture-time">00:00:00</div>
+                    </div>
+                    <div class="metric">
+                        <h3>Posture Corrections</h3>
+                        <div id="correction-count">0</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tips-section">
+            <h2>Posture Tips</h2>
+            <div class="tips-container">
+                <div class="tip">
+                    <h3>Keep your head aligned</h3>
+                    <p>Your ears should be in line with your shoulders.</p>
+                </div>
+                <div class="tip">
+                    <h3>Maintain shoulder position</h3>
+                    <p>Keep shoulders relaxed and pulled back slightly.</p>
+                </div>
+                <div class="tip">
+                    <h3>Position your screen properly</h3>
+                    <p>The top of your screen should be at or slightly below eye level.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bad Posture Detection App</p>
+        </div>
+    </footer>
+
+    <div id="notification" class="hidden">
+        <div class="notification-content">
+            <h3>Posture Alert!</h3>
+            <p>Please correct your posture.</p>
+            <button id="dismiss-notification">Dismiss</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/posture-detection.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 

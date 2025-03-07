@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Bad Posture Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Bad Posture Detection</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li class="active"><a href="/settings">Settings</a></li>
+                    <li><a href="/stats">Statistics</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section>
+            <h2>Detection Settings</h2>
+            <div class="settings-container">
+                <form id="settings-form">
+                    <div class="form-group">
+                        <label for="shoulder-threshold">Shoulder Angle Threshold (degrees)</label>
+                        <input type="range" id="shoulder-threshold" name="shoulder-threshold" min="5" max="30" value="15" step="1">
+                        <span id="shoulder-threshold-value">15</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="head-threshold">Head Position Threshold</label>
+                        <input type="range" id="head-threshold" name="head-threshold" min="0.05" max="0.3" value="0.15" step="0.01">
+                        <span id="head-threshold-value">0.15</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confidence-threshold">Detection Confidence Threshold</label>
+                        <input type="range" id="confidence-threshold" name="confidence-threshold" min="0.3" max="0.9" value="0.5" step="0.05">
+                        <span id="confidence-threshold-value">0.5</span>
+                    </div>
+                    
+                    <button type="submit" class="btn primary">Save Settings</button>
+                </form>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Notification Settings</h2>
+            <div class="settings-container">
+                <form id="notification-form">
+                    <div class="form-group">
+                        <label for="notification-delay">Notification Delay (seconds)</label>
+                        <input type="range" id="notification-delay" name="notification-delay" min="1" max="10" value="3" step="1">
+                        <span id="notification-delay-value">3</span>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="sound-enabled" name="sound-enabled" checked>
+                        <label for="sound-enabled">Enable Sound Alerts</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="auto-dismiss" name="auto-dismiss" checked>
+                        <label for="auto-dismiss">Auto-dismiss Notifications</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="auto-dismiss-time">Auto-dismiss Time (seconds)</label>
+                        <input type="range" id="auto-dismiss-time" name="auto-dismiss-time" min="1" max="10" value="5" step="1">
+                        <span id="auto-dismiss-time-value">5</span>
+                    </div>
+                    
+                    <button type="submit" class="btn primary">Save Settings</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bad Posture Detection App</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Update range value displays
+            const rangeInputs = document.querySelectorAll('input[type="range"]');
+            rangeInputs.forEach(input => {
+                const valueDisplay = document.getElementById(`${input.id}-value`);
+                input.addEventListener('input', () => {
+                    valueDisplay.textContent = input.value;
+                });
+            });
+            
+            // Handle settings form submission
+            const settingsForm = document.getElementById('settings-form');
+            settingsForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Save settings to localStorage
+                localStorage.setItem('shoulderThreshold', document.getElementById('shoulder-threshold').value);
+                localStorage.setItem('headThreshold', document.getElementById('head-threshold').value);
+                localStorage.setItem('confidenceThreshold', document.getElementById('confidence-threshold').value);
+                
+                showToast('Detection settings saved successfully!', 'success');
+            });
+            
+            // Handle notification form submission
+            const notificationForm = document.getElementById('notification-form');
+            notificationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Save notification settings to localStorage
+                localStorage.setItem('notificationDelay', document.getElementById('notification-delay').value);
+                localStorage.setItem('soundEnabled', document.getElementById('sound-enabled').checked);
+                localStorage.setItem('autoDismiss', document.getElementById('auto-dismiss').checked);
+                localStorage.setItem('autoDismissTime', document.getElementById('auto-dismiss-time').value);
+                
+                showToast('Notification settings saved successfully!', 'success');
+            });
+            
+            // Load saved settings
+            function loadSavedSettings() {
+                // Detection settings
+                const shoulderThreshold = localStorage.getItem('shoulderThreshold');
+                if (shoulderThreshold) {
+                    document.getElementById('shoulder-threshold').value = shoulderThreshold;
+                    document.getElementById('shoulder-threshold-value').textContent = shoulderThreshold;
+                }
+                
+                const headThreshold = localStorage.getItem('headThreshold');
+                if (headThreshold) {
+                    document.getElementById('head-threshold').value = headThreshold;
+                    document.getElementById('head-threshold-value').textContent = headThreshold;
+                }
+                
+                const confidenceThreshold = localStorage.getItem('confidenceThreshold');
+                if (confidenceThreshold) {
+                    document.getElementById('confidence-threshold').value = confidenceThreshold;
+                    document.getElementById('confidence-threshold-value').textContent = confidenceThreshold;
+                }
+                
+                // Notification settings
+                const notificationDelay = localStorage.getItem('notificationDelay');
+                if (notificationDelay) {
+                    document.getElementById('notification-delay').value = notificationDelay;
+                    document.getElementById('notification-delay-value').textContent = notificationDelay;
+                }
+                
+                const soundEnabled = localStorage.getItem('soundEnabled');
+                if (soundEnabled !== null) {
+                    document.getElementById('sound-enabled').checked = soundEnabled === 'true';
+                }
+                
+                const autoDismiss = localStorage.getItem('autoDismiss');
+                if (autoDismiss !== null) {
+                    document.getElementById('auto-dismiss').checked = autoDismiss === 'true';
+                }
+                
+                const autoDismissTime = localStorage.getItem('autoDismissTime');
+                if (autoDismissTime) {
+                    document.getElementById('auto-dismiss-time').value = autoDismissTime;
+                    document.getElementById('auto-dismiss-time-value').textContent = autoDismissTime;
+                }
+            }
+            
+            // Load settings on page load
+            loadSavedSettings();
+            
+            // Helper function to show toast messages
+            function showToast(message, type = 'info') {
+                // Create toast element
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.textContent = message;
+                
+                // Add to document
+                document.body.appendChild(toast);
+                
+                // Animate in
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 10);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            }
+            
+            // Add toast styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .toast {
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    padding: 12px 20px;
+                    background-color: #333;
+                    color: white;
+                    border-radius: 4px;
+                    opacity: 0;
+                    transform: translateY(20px);
+                    transition: all 0.3s ease;
+                    z-index: 1000;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                }
+                
+                .toast.show {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                
+                .toast-info {
+                    background-color: #3498db;
+                }
+                
+                .toast-success {
+                    background-color: #2ecc71;
+                }
+                
+                .toast-error {
+                    background-color: #e74c3c;
+                }
+                
+                .form-group {
+                    margin-bottom: 20px;
+                }
+                
+                .form-group label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-weight: bold;
+                }
+                
+                .form-group input[type="range"] {
+                    width: 100%;
+                    max-width: 400px;
+                }
+                
+                .form-group.checkbox {
+                    display: flex;
+                    align-items: center;
+                }
+                
+                .form-group.checkbox label {
+                    margin-bottom: 0;
+                    margin-left: 10px;
+                }
+                
+                .settings-container {
+                    max-width: 600px;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html> 
